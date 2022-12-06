@@ -41,13 +41,19 @@ else
 	GHC_CABAL_CACHE="ghc-8.10.7"
 fi
 
-git describe --all
+cabal help user-config || true
 
 ecabal() {
 	cabal "$@"
 }
 
 sync_from() {
+	cabal help user-config || true
+	ghc-pkg --version
+	export PATH="$HOME/.local/bin:$PATH"
+	ghc-pkg --version
+	cat dist-newstyle/cache/plan.json | cut -c 1-200
+
 	cabal-cache sync-from-archive \
 		--host-name-override=s3.us-west-004.backblazeb2.com \
 		--host-port-override=443 \
@@ -57,6 +63,22 @@ sync_from() {
 }
 
 sync_to() {
+	ghc-pkg --version
+	export PATH="$HOME/.local/bin:$PATH"
+	ghc-pkg --version
+	cat dist-newstyle/cache/plan.json | cut -c 1-200
+
+	echo "===== a ====="
+
+	cabal-cache sync-to-archive \
+		--host-name-override=s3.us-west-004.backblazeb2.com \
+		--host-port-override=443 \
+		--host-ssl-override=True \
+		--region us-west-2 \
+		--archive-uri moo
+
+	echo "===== b ====="
+
 	cabal-cache sync-to-archive \
 		--host-name-override=s3.us-west-004.backblazeb2.com \
 		--host-port-override=443 \
@@ -68,9 +90,7 @@ sync_to() {
 build_with_cache() {
 	ecabal configure "$@"
 	sync_from || true
-	ecabal build --dependencies-only "$@" || { sync_to || true ; }
-	sync_to || true
-	ecabal build "$@"
+	ecabal build --dependencies-only aeson || { sync_to || true ; }
 	sync_to || true
 }
 
