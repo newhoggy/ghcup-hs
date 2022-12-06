@@ -49,22 +49,20 @@ ecabal() {
 
 sync_from() {
 	cabal-cache sync-from-archive \
-		--aws-log-level=Debug \
 		--host-name-override=s3.us-west-004.backblazeb2.com \
 		--host-port-override=443 \
 		--host-ssl-override=True \
 		--region us-west-2 \
-		--archive-uri s3://ghcup-hs
+		--archive-uri s3://haskellworks-cabal-cache-backblaze/test-cache-1
 }
 
 sync_to() {
 	cabal-cache sync-to-archive \
-		--aws-log-level=Debug \
 		--host-name-override=s3.us-west-004.backblazeb2.com \
 		--host-port-override=443 \
 		--host-ssl-override=True \
 		--region us-west-2 \
-		--archive-uri s3://ghcup-hs
+		--archive-uri s3://haskellworks-cabal-cache-backblaze/test-cache-1
 }
 
 build_with_cache() {
