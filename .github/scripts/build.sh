@@ -74,6 +74,8 @@ sync_to() {
 build_with_cache() {
 	ecabal configure "$@"
 	sync_from || true
+	ecabal build --dependencies-only "$@" --dry-run
+	sync_from || true
 	ecabal build --dependencies-only "$@" || { sync_to || true ; }
 	sync_to || true
 	ecabal build "$@"
