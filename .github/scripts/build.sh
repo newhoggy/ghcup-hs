@@ -48,23 +48,27 @@ ecabal() {
 }
 
 sync_from() {
+	cabal_store_path="$(dirname "$(cabal help user-config | tail -n 1 | xargs)")/store"
+
 	cabal-cache sync-from-archive \
-		--aws-log-level=Debug \
 		--host-name-override=s3.us-west-004.backblazeb2.com \
 		--host-port-override=443 \
 		--host-ssl-override=True \
 		--region us-west-2 \
-		--archive-uri s3://ghcup-hs
+		--store-path="$cabal_store_path" \
+		--archive-uri s3://haskellworks-cabal-cache-backblaze/test-cache-3
 }
 
 sync_to() {
+	cabal_store_path="$(dirname "$(cabal help user-config | tail -n 1 | xargs)")/store"
+
 	cabal-cache sync-to-archive \
-		--aws-log-level=Debug \
 		--host-name-override=s3.us-west-004.backblazeb2.com \
 		--host-port-override=443 \
 		--host-ssl-override=True \
 		--region us-west-2 \
-		--archive-uri s3://ghcup-hs
+		--store-path="$cabal_store_path" \
+		--archive-uri s3://haskellworks-cabal-cache-backblaze/test-cache-3
 }
 
 build_with_cache() {
