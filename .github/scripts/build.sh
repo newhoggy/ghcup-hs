@@ -48,42 +48,45 @@ ecabal() {
 }
 
 sync_from() {
-	cabal help user-config || true
-	ghc-pkg --version
-	export PATH="$HOME/.local/bin:$PATH"
-	ghc-pkg --version
-	cat dist-newstyle/cache/plan.json | cut -c 1-200
+	# cabal help user-config || true
+	# ghc-pkg --version
+	# export PATH="$HOME/.local/bin:$PATH"
+	# ghc-pkg --version
+	# cat dist-newstyle/cache/plan.json | cut -c 1-200
 
 	cabal-cache sync-from-archive \
 		--host-name-override=s3.us-west-004.backblazeb2.com \
 		--host-port-override=443 \
 		--host-ssl-override=True \
 		--region us-west-2 \
+		--store-path=/home/runner/work/ghcup-hs/ghcup-hs/cabal/store \
 		--archive-uri s3://haskellworks-cabal-cache-backblaze/test-cache-1
 }
 
 sync_to() {
-	ghc-pkg --version
-	export PATH="$HOME/.local/bin:$PATH"
-	ghc-pkg --version
-	cat dist-newstyle/cache/plan.json | cut -c 1-200
+	# ghc-pkg --version
+	# export PATH="$HOME/.local/bin:$PATH"
+	# ghc-pkg --version
+	# cat dist-newstyle/cache/plan.json | cut -c 1-200
 
-	echo "===== a ====="
+	# echo "===== a ====="
+
+	# cabal-cache sync-to-archive \
+	# 	--host-name-override=s3.us-west-004.backblazeb2.com \
+	# 	--host-port-override=443 \
+	# 	--host-ssl-override=True \
+	# 	--region us-west-2 \
+	# 	--store-path=/home/runner/work/ghcup-hs/ghcup-hs/cabal/store \
+	# 	--archive-uri moo
+
+	# echo "===== b ====="
 
 	cabal-cache sync-to-archive \
 		--host-name-override=s3.us-west-004.backblazeb2.com \
 		--host-port-override=443 \
 		--host-ssl-override=True \
 		--region us-west-2 \
-		--archive-uri moo
-
-	echo "===== b ====="
-
-	cabal-cache sync-to-archive \
-		--host-name-override=s3.us-west-004.backblazeb2.com \
-		--host-port-override=443 \
-		--host-ssl-override=True \
-		--region us-west-2 \
+		--store-path=/home/runner/work/ghcup-hs/ghcup-hs/cabal/store \
 		--archive-uri s3://haskellworks-cabal-cache-backblaze/test-cache-1
 }
 
