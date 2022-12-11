@@ -48,7 +48,15 @@ ecabal() {
 }
 
 sync_from() {
+	echo "# cabal help user-config"
+	cabal help user-config
+
+	echo "# dirname"
+	dirname "$(cabal help user-config | tail -n 1 | xargs)"
+
+	echo "# cabal_store_path"
 	cabal_store_path="$(dirname "$(cabal help user-config | tail -n 1 | xargs)")/store"
+	echo "$cabal_store_path"
 
 	cabal-cache sync-from-archive \
 		--host-name-override=s3.us-west-004.backblazeb2.com \
